@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>FS Film Collector</title>
+    <style>
+        body {
+            width: 700px;
+            padding: 15px;
+            font-family: Arial, sans-serif;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-row {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+        .input-field {
+            flex: 1;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 8px;
+            background-color: #2c5282;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2a4365;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            margin: 10px 0;
+        }
+        #results {
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .export-btn {
+            margin-top: 10px;
+            background-color: #38a169;
+        }
+        .export-btn:hover {
+            background-color: #2f855a;
+        }
+        .film-stats {
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+        .film-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+        .frame-filter {
+            flex-grow: 1;
+            padding: 4px 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            min-width: 0;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+        }
+        .tooltip .icon {
+            color: #4a5568;
+            font-size: 16px;
+            cursor: help;
+            line-height: 1;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #2d3748;
+            color: white;
+            text-align: left;
+            padding: 8px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            line-height: 1.4;
+        }
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            margin-top: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent transparent #2d3748;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .language-selector {
+            margin-bottom: 20px;
+        }
+        .language-selector select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #cbd5e0;
+            background-color: white;
+            font-size: 14px;
+            color: #2d3748;
+        }
+        .language-selector select:focus {
+            outline: none;
+            border-color: #2c5282;
+            box-shadow: 0 0 0 1px #2c5282;
+        }
+        .or-divider {
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            color: #4a5568;
+            font-weight: bold;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector">
+        <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="de">Deutsch</option>
+        </select>
+    </div>
+
+    <div class="input-row">
+        <div class="input-field">
+            <div class="input-group">
+                <label for="catalogNumber" data-i18n="catalogNumber">Catalog Number:</label>
+                <input type="text" id="catalogNumber" data-i18n-placeholder="catalogNumberPlaceholder" placeholder="Enter catalog number">
+            </div>
+        </div>
+        
+        <div class="or-divider" data-i18n="or">OR</div>
+        
+        <div class="input-field">
+            <div class="input-group">
+                <label for="filmNumber" data-i18n="filmNumber">Film Number:</label>
+                <input type="text" id="filmNumber" data-i18n-placeholder="filmNumberPlaceholder" placeholder="Enter film numbers, comma-separated">
+            </div>
+        </div>
+    </div>
+    
+    <button id="startButton" data-i18n="startSearch">Start Search</button>
+    
+    <div id="loading">
+        <img src="loading.gif" alt="Loading..." width="50">
+        <p data-i18n="processing">Processing, please wait...</p>
+    </div>
+    
+    <div id="results"></div>
+    
+    <button id="exportButton" class="export-btn" style="display: none;" data-i18n="exportLinks">Export Links</button>
+
+    <script src="translations.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html> 
